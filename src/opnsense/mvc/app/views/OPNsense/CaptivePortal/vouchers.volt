@@ -216,7 +216,14 @@ POSSIBILITY OF SUCH DAMAGE.
                                 .appendTo('body');
 
                         $('#downloadFile').ready(function() {
-                            $('#downloadFile').get(0).click();
+                            //extended for download wit IE - see https://stackoverflow.com/a/27257511 for more info
+							if ( window.navigator.msSaveOrOpenBlob && window.Blob ) {
+								var blob = new Blob( [ output_data ], { type: "text/csv" } );
+								navigator.msSaveOrOpenBlob( blob, voucher_groupname.toLowerCase() + '.csv' );
+							}
+							else {
+								$('#downloadFile').get(0).click();
+							}
                         });
 
                         $("#generateVouchers").modal('hide');
